@@ -7,10 +7,8 @@
   const readStatus = document.getElementById("read-status");
   const registerStatus = document.getElementById("register-status");
   const year = document.getElementById("year");
-  const topDisclaimer = document.getElementById("top-disclaimer-full");
 
   year.textContent = String(new Date().getFullYear());
-  topDisclaimer.appendChild(document.querySelector(".disclaimer-body").cloneNode(true));
 
   // Only HTTPS links are accepted. The URL lives in config.js so it can be added
   // after the client supplies it without rebuilding the website.
