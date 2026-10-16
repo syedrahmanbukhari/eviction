@@ -109,10 +109,10 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
 @media (max-width: 640px) {
   body { font-size: 16px; line-height: 1.72; }
   .page-width, .reading-column { width: min(100% - 38px, 760px); }
-  .header-inner { min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 9px; padding-block: 14px 18px; }
-  .brand { justify-content: center; gap: 12px; font-size: .8rem; }
-  .brand img { flex-basis: 72px; width: 72px; height: 72px; }
-  .header-caption { max-width: 330px; font-size: .94rem; letter-spacing: .07em; line-height: 1.3; }
+  .header-inner { min-height: 138px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 8px; padding-block: 16px; }
+  .brand { min-width: 0; gap: 8px; font-size: clamp(.66rem, 2.45vw, .8rem); letter-spacing: .015em; }
+  .brand img { flex: 0 0 clamp(64px, 20vw, 76px); width: clamp(64px, 20vw, 76px); height: clamp(64px, 20vw, 76px); }
+  .header-caption { justify-self: stretch; max-width: none; font-size: clamp(.73rem, 2.8vw, .94rem); letter-spacing: .045em; line-height: 1.3; text-align: center; }
   .opening > .reading-column { padding-top: 60px; }
   .section-kicker { font-size: clamp(1.9rem, 8vw, 2.5rem); }
   h1 { margin-bottom: 34px; font-size: clamp(2.03rem, 8.2vw, 3rem); }
