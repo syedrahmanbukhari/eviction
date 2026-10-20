@@ -33,6 +33,9 @@ button, input { font: inherit; }
 .brand img { flex: 0 0 92px; width: 92px; height: 92px; border-radius: 50%; background: var(--white); object-fit: contain; }
 .header-caption { justify-self: center; max-width: 320px; color: #365550; font-size: 1.15rem; font-weight: 800; letter-spacing: .09em; line-height: 1.3; text-align: center; text-transform: uppercase; }
 
+.flyer-section { padding-top: clamp(28px, 5vw, 52px); background: var(--paper); }
+.flyer-section img { width: min(100% - 48px, 420px); height: auto; margin-inline: auto; }
+
 .reading-section { background: var(--paper); }
 .reading-section > .reading-column { padding-block: 58px; }
 .opening > .reading-column { padding-top: clamp(60px, 8vw, 105px); padding-bottom: 42px; }
@@ -68,20 +71,18 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
 .closing > .reading-column { padding-top: 24px; padding-bottom: 72px; }
 .closing h2 { margin-bottom: 19px; }
 .event-copy { margin-top: 48px; }
-.event-copy p { line-height: 1.85; }
-.event-copy strong { color: var(--ink); }
+.event-copy p { font-size: 1.17rem; line-height: 1.8; }
+.event-copy strong { color: var(--ink); font-weight: 800; }
 .prepare-title { margin-top: 48px; }
 .prepare-list span { font-size: 1.1rem; line-height: 1.45; }
 
 /* Full legal text stays readable, with acknowledgment at its end. */
 .registration { border-top: 1px solid var(--rule); }
 .registration > .reading-column { padding-top: 42px; padding-bottom: 96px; }
-.registration-intro { color: var(--muted); font-size: .92rem; }
 .disclaimer-card { border-top: 2px solid var(--sage); border-bottom: 1px solid var(--rule); }
-.disclaimer-card-header { display: flex; align-items: end; justify-content: space-between; gap: 14px; padding: 24px 0 18px; }
+.disclaimer-card-header { padding: 24px 0 18px; }
 .small-label { color: #6a7a68; font-size: .69rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .disclaimer-card-header h3 { max-width: 600px; margin: 7px 0 0; font-size: 1.35rem; line-height: 1.3; }
-.read-time { white-space: nowrap; color: var(--muted); font-size: .72rem; }
 .disclaimer-scroll { height: min(385px, 51vh); overflow-y: auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: rgba(255,253,247,.38); scrollbar-color: #a0ab9a var(--paper); }
 .disclaimer-scroll:focus { outline-offset: -4px; }
 .disclaimer-body { padding: 25px 18px; color: #455049; font-size: .78rem; line-height: 1.7; }
@@ -95,11 +96,10 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
 .acknowledge { display: flex; align-items: flex-start; gap: 12px; color: var(--ink); font-size: .86rem; font-weight: 700; line-height: 1.55; cursor: pointer; }
 .acknowledge input { flex: 0 0 20px; width: 20px; height: 20px; margin: 3px 0 0; accent-color: var(--sage); }
 .acknowledge:has(input:disabled) { opacity: .55; cursor: not-allowed; }
-.register-action { padding-top: 28px; }
-.register-action button { width: min(100%, 360px); min-height: 57px; display: flex; align-items: center; justify-content: space-between; padding: 12px 19px; border: 0; border-radius: 5px; background: var(--ink); color: var(--white); font-size: .96rem; font-weight: 800; cursor: pointer; transition: background .2s ease; }
+.register-action { padding-top: 30px; text-align: center; }
+.register-action button { width: min(100%, 480px); min-height: 76px; display: flex; align-items: center; justify-content: center; margin-inline: auto; padding: 16px 24px; border: 0; border-radius: 5px; background: var(--ink); color: var(--white); font-size: clamp(1.2rem, 2.4vw, 1.45rem); font-weight: 800; text-align: center; cursor: pointer; transition: background .2s ease; }
 .register-action button:not(:disabled):hover { background: #466459; }
 .register-action button:disabled { background: #8e9a8e; cursor: not-allowed; }
-.register-action button span { font-size: 1.3rem; font-weight: 400; }
 .register-action p { margin: 9px 0 0; color: var(--muted); font-size: .76rem; }
 
 .site-footer { padding: 28px 0; border-top: 1px solid var(--rule); background: var(--paper); color: #69746b; font-size: .72rem; }
@@ -109,6 +109,7 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
 @media (max-width: 640px) {
   body { font-size: 16px; line-height: 1.72; }
   .page-width, .reading-column { width: min(100% - 38px, 760px); }
+  .flyer-section img { width: min(100% - 38px, 420px); }
   .header-inner { min-height: 138px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 8px; padding-block: 16px; }
   .brand { min-width: 0; gap: 8px; font-size: clamp(.66rem, 2.45vw, .8rem); letter-spacing: .015em; }
   .brand img { flex: 0 0 clamp(64px, 20vw, 76px); width: clamp(64px, 20vw, 76px); height: clamp(64px, 20vw, 76px); }
@@ -122,10 +123,9 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
   .teaching > .reading-column, .faq > .reading-column { padding-block: 64px; }
   .closing > .reading-column { padding-bottom: 68px; }
   .faq-item { margin-bottom: 28px; }
-  .disclaimer-card-header { display: block; }
-  .read-time { display: block; margin-top: 5px; }
   .disclaimer-body { padding: 20px 13px; }
   .disclaimer-scroll { height: min(360px, 49vh); }
+  .register-action button { min-height: 72px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
