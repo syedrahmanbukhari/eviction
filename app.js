@@ -4,39 +4,68 @@
   const disclaimer = document.getElementById("disclaimer-scroll");
   const checkbox = document.getElementById("acknowledge-checkbox");
   const registerButton = document.getElementById("register-button");
+  const paypalContainer = document.getElementById("paypal-container-RY59UWXKRTN34");
   const readStatus = document.getElementById("read-status");
   const registerStatus = document.getElementById("register-status");
   const year = document.getElementById("year");
+  let paypalRendered = false;
+  let paypalRendering = false;
 
   year.textContent = String(new Date().getFullYear());
-
-  // Only HTTPS links are accepted. The URL lives in config.js so it can be added
-  // after the client supplies it without rebuilding the website.
-  function getRegistrationUrl() {
-    const raw = window.MASTERCLASS_CONFIG?.registrationUrl;
-    if (typeof raw !== "string" || !raw.trim()) return null;
-    try {
-      const url = new URL(raw.trim());
-      return url.protocol === "https:" ? url.href : null;
-    } catch {
-      return null;
-    }
-  }
 
   function hasReachedEnd() {
     return disclaimer.scrollTop + disclaimer.clientHeight >= disclaimer.scrollHeight - 12;
   }
 
-  function updateRegistration() {
-    const url = getRegistrationUrl();
-    registerButton.disabled = !(checkbox.checked && url);
-    if (!checkbox.checked) {
-      registerStatus.textContent = "Read and acknowledge the disclaimer to continue.";
-    } else if (!url) {
-      registerStatus.textContent = "Registration link coming soon. Please check back later.";
-    } else {
-      registerStatus.textContent = "You’ll continue to the paid Zoom registration page.";
+  function isAcknowledged() {
+    return !checkbox.disabled && checkbox.checked;
+  }
+
+  function showCheckoutError() {
+    paypalRendering = false;
+    paypalContainer.hidden = true;
+    registerButton.hidden = false;
+    registerStatus.textContent = "PayPal checkout could not load. Please refresh and try again.";
+  }
+
+  function renderPayPal() {
+    if (paypalRendered || paypalRendering) return;
+    if (!window.paypal?.HostedButtons) {
+      showCheckoutError();
+      return;
     }
+
+    paypalRendering = true;
+    try {
+      Promise.resolve(window.paypal.HostedButtons({ hostedButtonId: "RY59UWXKRTN34" })
+        .render("#paypal-container-RY59UWXKRTN34"))
+        .then(() => {
+          paypalRendered = true;
+          paypalRendering = false;
+          if (isAcknowledged()) {
+            registerStatus.textContent = "Complete checkout with PayPal. The current price is shown there.";
+          }
+        })
+        .catch(showCheckoutError);
+    } catch {
+      showCheckoutError();
+    }
+  }
+
+  function updateRegistration() {
+    if (!isAcknowledged()) {
+      registerButton.hidden = false;
+      paypalContainer.hidden = true;
+      registerStatus.textContent = "Read and acknowledge the disclaimer to continue.";
+      return;
+    }
+
+    registerButton.hidden = true;
+    paypalContainer.hidden = false;
+    registerStatus.textContent = paypalRendered
+      ? "Complete checkout with PayPal. The current price is shown there."
+      : "Loading secure PayPal checkout...";
+    renderPayPal();
   }
 
   function updateReadState() {
@@ -47,10 +76,6 @@
 
   disclaimer.addEventListener("scroll", updateReadState, { passive: true });
   checkbox.addEventListener("change", updateRegistration);
-  registerButton.addEventListener("click", () => {
-    const url = getRegistrationUrl();
-    if (checkbox.checked && url) window.location.assign(url);
-  });
 
   updateReadState();
   updateRegistration();

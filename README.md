@@ -1,21 +1,17 @@
 # Georgia Eviction Defense Masterclass landing page
 
-A standalone, mobile-responsive landing page. It is a separate project from the document-generator website and does not require PHP, PayPal, Node, or a database.
+A standalone, mobile-responsive landing page. It is separate from the document-generator website and uses a PayPal Hosted Button for checkout. No PHP, Node server, or database is required.
 
-## Add the Zoom registration link
+## PayPal checkout and Zoom redirect
 
-Open `config.js` and place the client's final paid Zoom landing-page URL in `registrationUrl`, for example:
+The page loads the PayPal JavaScript SDK with the client ID supplied by the client and renders hosted button `RY59UWXKRTN34`. Visitors must scroll to the end of the legal disclaimer and check the acknowledgment box before the PayPal button appears.
 
-```js
-window.MASTERCLASS_CONFIG = {
-  registrationUrl: "https://your-final-zoom-registration-page.example"
-};
-```
+The price is set on the hosted button in the client's PayPal account, not in this website. The client indicated it is **$1 for testing** and plans to change it to **$47** afterward. The page deliberately does not show a fixed price while those amounts differ. Check the amount shown by PayPal before making the site available for production purchases.
 
-Use the real `https://` address supplied by the client. While the link is blank, **Register Now** stays disabled. With a valid link, visitors must scroll through the full disclaimer and check the acknowledgment box before the button is enabled. The button takes them to the configured page in the same tab.
+Set the final Zoom registration URL as the button's **Auto-return** URL in PayPal's Confirmation settings. Test a completed payment and confirm that PayPal displays the intended amount and returns the buyer to the correct Zoom page. This static website does not verify payments itself.
 
 ## Preview and deploy
 
-Open `index.html` in a browser for a local preview. Upload the *contents of this folder* (`index.html`, `styles.css`, `app.js`, `config.js`, and `assets/`) to the chosen web root or a new subdomain's document root. Keep this project separate from the existing `newforms.online` document-generator deployment. No build command is needed; the ZIP supplied with this project contains ready-to-upload files.
+Open `index.html` in a browser for a local preview. Upload the *contents of this folder* (`index.html`, `styles.css`, `app.js`, and `assets/`) to the chosen web root or a new subdomain's document root. Keep this project separate from the existing `newforms.online` document-generator deployment. No build command is needed; the ZIP supplied with this project contains ready-to-upload files. An internet connection is needed to load PayPal checkout.
 
-The legal disclaimer and marketing copy were supplied by the client. Review the text and final Zoom destination with the client before publishing.
+The legal disclaimer and marketing copy were supplied by the client.

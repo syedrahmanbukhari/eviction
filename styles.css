@@ -97,9 +97,11 @@ h3 { margin-bottom: 7px; font-size: 1.1rem; font-weight: 800; line-height: 1.35;
 .acknowledge input { flex: 0 0 20px; width: 20px; height: 20px; margin: 3px 0 0; accent-color: var(--sage); }
 .acknowledge:has(input:disabled) { opacity: .55; cursor: not-allowed; }
 .register-action { padding-top: 30px; text-align: center; }
-.register-action button { width: min(100%, 480px); min-height: 76px; display: flex; align-items: center; justify-content: center; margin-inline: auto; padding: 16px 24px; border: 0; border-radius: 5px; background: var(--ink); color: var(--white); font-size: clamp(1.2rem, 2.4vw, 1.45rem); font-weight: 800; text-align: center; cursor: pointer; transition: background .2s ease; }
+.register-action button { width: min(100%, 480px); min-height: 76px; display: flex; align-items: center; justify-content: center; margin-inline: auto; padding: 16px 24px; border: 0; border-radius: 5px; background: var(--ink); color: var(--white); font-size: clamp(1.35rem, 2.6vw, 1.6rem); font-weight: 800; text-align: center; cursor: pointer; transition: background .2s ease; }
 .register-action button:not(:disabled):hover { background: #466459; }
 .register-action button:disabled { background: #8e9a8e; cursor: not-allowed; }
+.register-action button[hidden], .paypal-container[hidden] { display: none; }
+.paypal-container { width: min(100%, 480px); min-height: 76px; margin-inline: auto; }
 .register-action p { margin: 9px 0 0; color: var(--muted); font-size: .76rem; }
 
 .site-footer { padding: 28px 0; border-top: 1px solid var(--rule); background: var(--paper); color: #69746b; font-size: .72rem; }
