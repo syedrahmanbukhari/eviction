@@ -12,12 +12,12 @@ function response() {
 
 async function main() {
   const { default: handler } = await import('../api/send-test-email.mjs');
-  const originalKey = process.env.RESEND_API_KEY;
-  const originalFrom = process.env.RESEND_FROM_EMAIL;
+  const originalKey = process.env.BREVO_API_KEY;
+  const originalFrom = process.env.BREVO_FROM_EMAIL;
   const originalFetch = global.fetch;
   try {
-    delete process.env.RESEND_API_KEY;
-    delete process.env.RESEND_FROM_EMAIL;
+    delete process.env.BREVO_API_KEY;
+    delete process.env.BREVO_FROM_EMAIL;
     const methodRejected = response();
     await handler({ method: 'GET' }, methodRejected);
     assert.equal(methodRejected.statusCode, 405);
@@ -30,8 +30,8 @@ async function main() {
     await handler({ method: 'POST', body: { email: 'buyer@example.com' } }, unconfigured);
     assert.equal(unconfigured.statusCode, 503);
 
-    process.env.RESEND_API_KEY = 'test-key';
-    process.env.RESEND_FROM_EMAIL = 'onboarding@resend.dev';
+    process.env.BREVO_API_KEY = 'test-key';
+    process.env.BREVO_FROM_EMAIL = 'sender@example.com';
     let request;
     global.fetch = async (url, options) => {
       request = { url, options };
@@ -42,13 +42,13 @@ async function main() {
     await handler({ method: 'POST', body: { email: ' buyer@example.com ' } }, success);
     assert.equal(success.statusCode, 200);
     assert.equal(success.data.sent, true);
-    assert.equal(request.url, 'https://api.resend.com/emails');
-    assert.equal(request.options.headers.Authorization, 'Bearer test-key');
+    assert.equal(request.url, 'https://api.brevo.com/v3/smtp/email');
+    assert.equal(request.options.headers['api-key'], 'test-key');
     const message = JSON.parse(request.options.body);
-    assert.deepEqual(message.to, ['buyer@example.com']);
-    assert.equal(message.from, 'onboarding@resend.dev');
-    assert.match(message.text, /Here is your Zoom link/);
-    assert.doesNotMatch(message.text, /https?:\/\//);
+    assert.deepEqual(message.to, [{ email: 'buyer@example.com' }]);
+    assert.deepEqual(message.sender, { name: 'Tenant Resource Assistant', email: 'sender@example.com' });
+    assert.match(message.textContent, /Here is your Zoom link/);
+    assert.doesNotMatch(message.textContent, /https?:\/\//);
 
     global.fetch = async () => ({ ok: false });
     const failed = response();
@@ -56,10 +56,10 @@ async function main() {
     assert.equal(failed.statusCode, 502);
     assert.doesNotMatch(JSON.stringify(failed.data), /test-key/);
   } finally {
-    if (originalKey === undefined) delete process.env.RESEND_API_KEY;
-    else process.env.RESEND_API_KEY = originalKey;
-    if (originalFrom === undefined) delete process.env.RESEND_FROM_EMAIL;
-    else process.env.RESEND_FROM_EMAIL = originalFrom;
+    if (originalKey === undefined) delete process.env.BREVO_API_KEY;
+    else process.env.BREVO_API_KEY = originalKey;
+    if (originalFrom === undefined) delete process.env.BREVO_FROM_EMAIL;
+    else process.env.BREVO_FROM_EMAIL = originalFrom;
     global.fetch = originalFetch;
   }
 

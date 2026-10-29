@@ -4,13 +4,13 @@ A standalone, mobile-responsive landing page. It is separate from the document-g
 
 ## PayPal checkout and Zoom redirect
 
-The page loads the PayPal JavaScript SDK with the client ID supplied by the client and renders hosted button `RY59UWXKRTN34`. Visitors must scroll to the end of the legal disclaimer, check the acknowledgment box, enter an email address, and select Register Now before the PayPal button appears. That click attempts to send a test email through Resend. If email delivery fails, the error is shown and PayPal checkout remains available so the existing payment flow is not blocked.
+The page loads the PayPal JavaScript SDK with the client ID supplied by the client and renders hosted button `RY59UWXKRTN34`. Visitors must scroll to the end of the legal disclaimer, check the acknowledgment box, enter an email address, and select Register Now before the PayPal button appears. That click attempts to send a test email through Brevo. If email delivery fails, the error is shown and PayPal checkout remains available so the existing payment flow is not blocked.
 
 ## Test email setup
 
-Add `RESEND_API_KEY` and `RESEND_FROM_EMAIL` to the Vercel project's environment variables, then redeploy. For a domain-free test, set `RESEND_FROM_EMAIL=onboarding@resend.dev` and enter the same recipient email used to sign up for Resend. Resend's test sender does not send to arbitrary recipients. Once a sending domain is verified in Resend, set `RESEND_FROM_EMAIL` to an address on that domain. Do not put the API key in source code or GitHub.
+Add `BREVO_API_KEY` and `BREVO_FROM_EMAIL` to the Vercel project's environment variables, then redeploy. Set `BREVO_FROM_EMAIL` to the sender address verified in Brevo. The API key needs Transactional email permission. Brevo may substitute a shared sending domain for an unauthenticated freemail sender; check Brevo's transactional logs and the recipient's spam folder when testing. Do not put the API key in source code or GitHub.
 
-The test message says “Here is your Zoom link” but contains no Zoom URL and does not imply payment was completed. It is sent when Register Now is selected, before PayPal checkout. This is only for testing; a production confirmation email must be triggered after a verified completed payment. The endpoint validates addresses, does not store them, and returns a generic delivery error without exposing the Resend key.
+The test message says “Here is your Zoom link” but contains no Zoom URL and does not imply payment was completed. It is sent when Register Now is selected, before PayPal checkout. This is only for testing; a production confirmation email must be triggered after a verified completed payment. The endpoint validates addresses, does not store them, and returns a generic delivery error without exposing the Brevo key.
 
 The price is set on the hosted button in the client's PayPal account, not in this website. The client indicated it is **$1 for testing** and plans to change it to **$47** afterward. The page deliberately does not show a fixed price while those amounts differ. Check the amount shown by PayPal before making the site available for production purchases.
 

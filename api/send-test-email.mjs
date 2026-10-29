@@ -18,28 +18,29 @@ export default async function sendTestEmail(request, response) {
     return response.status(400).json({ error: "Enter a valid email address." });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
+  const apiKey = process.env.BREVO_API_KEY;
+  const from = process.env.BREVO_FROM_EMAIL;
   if (!apiKey || !from) {
     return response.status(503).json({ error: "Test email is not configured." });
   }
 
   try {
-    const resendResponse = await fetch("https://api.resend.com/emails", {
+    const brevoResponse = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "api-key": apiKey,
+        Accept: "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from,
-        to: [email],
+        sender: { name: "Tenant Resource Assistant", email: from },
+        to: [{ email }],
         subject: "Your Zoom link — test email",
-        text: "Here is your Zoom link.\n\nThis is a test email; no Zoom URL has been added yet.\n\nTenant Resource Assistant"
+        textContent: "Here is your Zoom link.\n\nThis is a test email; no Zoom URL has been added yet.\n\nTenant Resource Assistant"
       })
     });
 
-    if (!resendResponse.ok) {
+    if (!brevoResponse.ok) {
       return response.status(502).json({ error: "Test email could not be sent." });
     }
 
