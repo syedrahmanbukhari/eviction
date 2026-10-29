@@ -1,3 +1,5 @@
+import { zoomRegistrationEmail } from "./email-template.mjs";
+
 export default async function sendTestEmail(request, response) {
   response.setHeader("Cache-Control", "no-store");
 
@@ -35,8 +37,7 @@ export default async function sendTestEmail(request, response) {
       body: JSON.stringify({
         sender: { name: "Tenant Resource Assistant", email: from },
         to: [{ email }],
-        subject: "Your Zoom link — test email",
-        textContent: "Here is your Zoom link.\n\nThis is a test email; no Zoom URL has been added yet.\n\nTenant Resource Assistant"
+        ...zoomRegistrationEmail()
       })
     });
 

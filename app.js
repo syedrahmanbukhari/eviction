@@ -94,14 +94,14 @@
     readStatus.textContent = "You’ve reached the end. You may now acknowledge the disclaimer.";
   }
 
-  async function sendTestEmail() {
+  async function sendRegistrationEmail() {
     if (!isAcknowledged() || sendingEmail || emailSent) return;
     if (!emailInput.reportValidity()) return;
 
     const email = emailInput.value.trim();
     sendingEmail = true;
     registerButton.disabled = true;
-    registerButton.textContent = "Sending test email...";
+    registerButton.textContent = "Sending Zoom link...";
     emailStatus.textContent = "";
 
     try {
@@ -113,20 +113,20 @@
       if (!response.ok) throw new Error("Email service unavailable");
       emailSent = true;
       emailInput.disabled = true;
-      emailStatus.textContent = `Test email sent to ${email}.`;
+      emailStatus.textContent = `Zoom registration link sent to ${email}.`;
     } catch {
-      emailStatus.textContent = "Test email could not be sent. Check the address and try again.";
+      emailStatus.textContent = "Zoom link could not be sent. Check the address and try again.";
     } finally {
       sendingEmail = false;
       checkoutRequested = true;
-      registerButton.textContent = emailSent ? "Register Now" : "Retry test email";
+      registerButton.textContent = emailSent ? "Register Now" : "Retry sending Zoom link";
       updateRegistration();
     }
   }
 
   disclaimer.addEventListener("scroll", updateReadState, { passive: true });
   checkbox.addEventListener("change", updateRegistration);
-  registerButton.addEventListener("click", sendTestEmail);
+  registerButton.addEventListener("click", sendRegistrationEmail);
 
   updateReadState();
   updateRegistration();

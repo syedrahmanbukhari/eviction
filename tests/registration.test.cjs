@@ -94,7 +94,7 @@ async function main() {
   assert.equal(page.requests.length, 1);
   assert.equal(page.requests[0].url, '/api/send-test-email');
   assert.equal(JSON.parse(page.requests[0].options.body).email, 'buyer@example.com');
-  assert.match(page.elements['email-status'].textContent, /Test email sent/);
+  assert.match(page.elements['email-status'].textContent, /Zoom registration link sent/);
   assert.equal(page.elements['registration-email'].disabled, true);
   assert.equal(page.elements['register-button'].hidden, true);
   assert.equal(page.elements['paypal-container-RY59UWXKRTN34'].hidden, false);

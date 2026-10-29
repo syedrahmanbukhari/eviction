@@ -47,8 +47,15 @@ async function main() {
     const message = JSON.parse(request.options.body);
     assert.deepEqual(message.to, [{ email: 'buyer@example.com' }]);
     assert.deepEqual(message.sender, { name: 'Tenant Resource Assistant', email: 'sender@example.com' });
-    assert.match(message.textContent, /Here is your Zoom link/);
-    assert.doesNotMatch(message.textContent, /https?:\/\//);
+    const zoomUrl = 'https://us06web.zoom.us/meeting/register/-ahKmxQOQC-QpBO4rZNVYg';
+    assert.match(message.subject, /Zoom registration link/);
+    assert.ok(message.htmlContent.includes(`href="${zoomUrl}"`));
+    assert.match(message.htmlContent, /Open the Zoom registration link/);
+    assert.equal('textContent' in message, false, 'Brevo accepts one body format per request');
+    assert.match(message.htmlContent, /tenant-resource-logo\.png/);
+    assert.match(message.htmlContent, /#d7978b/);
+    assert.match(message.htmlContent, /#263b38/);
+    assert.doesNotMatch(message.htmlContent, /payment (was|is) (complete|confirmed)/i);
 
     global.fetch = async () => ({ ok: false });
     const failed = response();
